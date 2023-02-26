@@ -89,7 +89,7 @@ if(isset($_SESSION['email'])){
                             <a href="#add_announces" class="dropdown-item" data-bs-toggle="modal"
                                 data-bs-target="#add_announces" id="add_announce">Add Announce</a>
                             <a href="#Profile" class="dropdown-item" id="setting">Setting</a>
-                            <a href="" name="logout" class="dropdown-item">Log out</a>
+                            <a href="logout.php" name="logout" class="dropdown-item">Log out</a>
                         </div>
                     </div>
 
@@ -411,7 +411,8 @@ if(isset($_SESSION['email'])){
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script>
 
-$(document).on('click', '.edit_info', function () {
+$(document).on('click', '.edit_info', function (e) {
+    e.preventDefault();
     var announce_id = $(this).val();
     $.ajax({
         type: "GET",
@@ -421,18 +422,18 @@ $(document).on('click', '.edit_info', function () {
             if(res.status == 200){
                 $('#announce_id').val(announce_id);
                 $('#title').val(res.data.Title);
-                $('#announce_Images').attr('src',('images/'+res.data.Image));
-                $('#house_floor').val(res.data.Description);
+                $('#announce_Images').attr('src',('images/'+res.data.Image_Path));
+                $('#house_floor').val(res.data.House_Floor);
                 $('#area').val(res.data.Area);
-                $('#house_number').val(res.data.Address);
+                $('#house_number').val(res.data.House_Number);
                 $('#rooms').val(res.data.Amount);
-                $('#bathrooms').val(res.data.Announcement_Date);
-                $('#price').val(res.data.Ad_Type);
-                $('#category').val(res.data.Ad_Type);
-                $('#code_postal').val(res.data.Ad_Type);
-                $('#type').val(res.data.Ad_Type);
-                $('#country').val(res.data.Ad_Type);
-                $('#city').val(res.data.Ad_Type);
+                $('#bathrooms').val(res.data.Bathrooms);
+                $('#price').val(res.data.Price);
+                $('#category').val(res.data.Category);
+                $('#code_postal').val(res.data.Code_Postal);
+                $('#type').val(res.data.Type);
+                $('#country').val(res.data.Country);
+                $('#city').val(res.data.City);
             }
         }
     });

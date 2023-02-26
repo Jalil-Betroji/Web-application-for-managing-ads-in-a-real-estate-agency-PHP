@@ -90,7 +90,7 @@ if(isset($_SESSION['email'])){
                             <a href="#add_announces" class="dropdown-item" data-bs-toggle="modal"
                                 data-bs-target="#add_announces" id="add_announce">Add Announce</a>
                             <a href="#Profile" class="dropdown-item" id="setting">Setting</a>
-                            <a href="" name="logout" class="dropdown-item">Log out</a>
+                            <a href="logout.php" name="logout" class="dropdown-item">Log out</a>
                         </div>
                     </div>
 

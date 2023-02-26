@@ -92,6 +92,7 @@ if(isset($_SESSION['email'])){
                     </a>
                     <div class="dropdown-menu rounded-0 m-0">
                     <a href="profile.php" class="dropdown-item" id="my_announces">Profile</a>
+                    <a href="logout.php" name="logout" class="dropdown-item">Log out</a>
          
                 </div>
                 </div>

@@ -1,5 +1,13 @@
 <?php
 require 'connect.php';
+session_start();
+if(isset($_SESSION['email'])){
+    $clientEmail = $_SESSION['email'];
+    $sql = "SELECT a.Client_ID , a.Last_Name, b.First_Name, a.Country ,a.Email , a.Phone , a.Account_Type,
+     a.City , a.Code_Postal ,a.CIN , 'Full_Name' , concat(b.First_Name ,' ',a.Last_Name) as 'Full_Name'
+    FROM client a,client b WHERE a.Email = b.Email;";
+    $statment = $conn->query($sql)->fetch();
+}
 
 ?>
 
@@ -63,26 +71,59 @@ require 'connect.php';
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
+                <?php
+                    if(isset($_SESSION['email'])){
+                    ?>
                     <div class="navbar-nav ms-auto">
-                        <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="index.php" class="nav-item nav-link active">Home</a>
                         <a href="#footer" class="nav-item nav-link">About</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Announces</a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="announces.html" class="dropdown-item">Announces List</a>
-                                <a href="index.html" class="dropdown-item">Our Partners</a>
+                                <a href="announces.php" class="dropdown-item">Announces List</a>
+                                <a href="#Partners" class="dropdown-item">Our Partners</a>
                             </div>
                         </div>
-                        <a href="contact.html" class="nav-item nav-link">Contact</a>
-                        <div class="nav-item nav-link user_sign">
+                        <a href="contact.php" class="nav-item nav-link">Contact</a>
+                    <div class="nav-item dropdown d-flex m-1">
+                    <a href="#" class="nav-item"><img class="rounded-circle" style="width:4rem; height:4rem;"
+                    src="img/Review1.jpg">
+                    <span class="fw-bold"><?php echo $statment['Full_Name'] ?></span>
+                    </a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                    <a href="profile.php" class="dropdown-item" id="my_announces">Profile</a>
+                    <a href="logout.php" name="logout" class="dropdown-item">Log out</a>
+         
+                </div>
+                </div>
+                        
+                       
+                    </div>
+                    <?php
+                    }else{
+                        ?>
+                        <div class="navbar-nav ms-auto">
+                        <a href="index.php" class="nav-item nav-link active">Home</a>
+                        <a href="#footer" class="nav-item nav-link">About</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Announces</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a href="announces.php" class="dropdown-item">Announces List</a>
+                                <a href="#Partners" class="dropdown-item">Our Partners</a>
+                            </div>
+                        </div>
+                        <a href="contact.php" class="nav-item nav-link">Contact</a>
+                    <div class="nav-item dropdown d-flex m-1">
+                    <div class="nav-item nav-link user_sign">
                             <i class="fa-solid fa-right-to-bracket" data-bs-toggle="modal"
                                 data-bs-target="#Login_modal"></i>
                         </div>
                         <div class="nav-item nav-link user_sign">
                             <i class="fa-solid fa-user-plus" data-bs-toggle="modal" data-bs-target="#signup_modal"></i>
                         </div>
-                    </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </nav>
         </div>
@@ -278,62 +319,65 @@ require 'connect.php';
         <!-- Log in  modal start -->
 
         <section class="modal fade" id="Login_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog-centered modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Sign in into your account and
-                            enjoy
-                            exploring the planet</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body row gap-3">
-                        <!-- ======== -->
-                        <div class="col img-left d-none d-md-flex">
-                            <img src="img/login.jpg" alt="">
+                    aria-hidden="true">
+                    <div class="modal-dialog-centered modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Sign in into your account and
+                                    enjoy
+                                    exploring the planet</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body row gap-3">
+                                <!-- ======== -->
+                                <div class="col img-left d-none d-md-flex">
+                                    <img src="img/login.jpg" alt="">
+                                </div>
+                                <form class="col form-box px-3" action="code.php" method="POST">
+
+                                    <h4 class="title text-center mt-4">
+                                        Login into account
+                                    </h4>
+                                    <div class="form-input">
+                                        <span><i class="fa fa-envelope-o"></i></span>
+                                        <input type="email" name="login_email" class="email_Validation" placeholder="Email Address"
+                                            tabindex="10" required>
+                                    </div>
+                                    <div class="form-input">
+                                        <span><i class="fa fa-key"></i></span>
+                                        <input type="password" name="login_password" placeholder="Password" required>
+                                    </div>
+
+                                    <input type="submit" class="btn btn-primary w-100" name="login_into_account" value="Login">
+
+
+                                    <div class="text-center mb-2">
+                                        Don't have an account?
+                                        <a href="" class="register-link" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#signup_modal">
+                                            Register here
+                                        </a>
+                                    </div>
+                                </form>
+
+
+
+                                <!-- ======== -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
-                        <form class="col form-box px-3">
-
-                            <h4 class="title text-center mt-4">
-                                Login into account
-                            </h4>
-                            <div class="form-input">
-                                <span><i class="fa fa-envelope-o"></i></span>
-                                <input type="email" name="" placeholder="Email Address" tabindex="10" required>
-                            </div>
-                            <div class="form-input">
-                                <span><i class="fa fa-key"></i></span>
-                                <input type="password" name="" placeholder="Password" required>
-                            </div>
-
-                            <button type="button" class="btn btn-primary w-100">Login</button>
-
-                            <div class="text-center mb-2">
-                                Don't have an account?
-                                <a href="#" class="register-link">
-                                    Register here
-                                </a>
-                            </div>
-                        </form>
-
-
-
-                        <!-- ======== -->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+                </section>
 
-        <!-- Log in modal end -->
+                <!-- Log in modal end -->
 
 
 
-       <!-- signUp  modal start -->
+ <!-- signUp  modal start -->
 
-       <section class="modal fade" id="signup_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
+ <section class="modal fade" id="signup_modal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog-centered modal-dialog modal-xl">
                         <div class="modal-content">
@@ -354,7 +398,7 @@ require 'connect.php';
                                     <figure class="img-left d-none d-md-flex">
                                         <img src="img/signup.jpg" alt="">
                                     </figure>
-                                    <form class="px-3" action="index.php" method="POST">
+                                    <form class="px-3" action="code.php" method="POST">
                                         <input type="hidden" name="save_data" id="save_data" value="">
                                         <div class="d-flex justify-content-around">
                                             <p id="First_name_error" class="error"></p>
@@ -444,7 +488,8 @@ require 'connect.php';
 
                                         <div class="text-center mb-2">
                                             Already have an account?
-                                            <a href="#" class="register-link">
+                                            <a href="" class="register-link" data-bs-dismiss="modal" data-bs-toggle="modal"
+                                                data-bs-target="#Login_modal">
                                                 Login
                                             </a>
                                         </div>
@@ -461,6 +506,7 @@ require 'connect.php';
                 </section>
 
                 <!-- sign up modal end -->
+
 
 
         <!-- More Details modal start -->

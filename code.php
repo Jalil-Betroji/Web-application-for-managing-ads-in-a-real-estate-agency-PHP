@@ -116,23 +116,11 @@ if(isset($_GET['announce_id'])){
 if(isset($_GET['announce_id'])){
  
     $announce_id = $_GET['announce_id'];
-    
+
     $stmt = $conn->prepare("SELECT * FROM announces WHERE Announce_ID=:announce_id");
     $stmt->bindParam(':announce_id', $announce_id);
     $stmt->execute();
-
-    if($stmt->rowCount() == 1)
-    {
-        $ad_announce = $stmt->fetch();
-
-        $res = [
-            'status' => 200,
-            'message' => 'Announce Fetch Successfully by id',
-            'data' => $ad_announce
-        ];
-        echo json_encode($res);
-        return;
-    }
+    print_r($stmt);
     
 }
 
