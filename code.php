@@ -92,76 +92,55 @@ if(isset($_SESSION['email'])){
     header('Location:profile.php');
     echo print_r($userIDArr);
 }
+
+if(isset($_GET['announce_id'])){
+    $announce_id = mysqli_real_escape_string($conn, $_GET['announce_id']);
+
+    $query = "SELECT * FROM announces WHERE Announce_ID='$announce_id'";
+    $query_run = mysqli_query($conn, $query);
+
+    if(mysqli_num_rows($query_run) == 1)
+    {
+        $ad_announce = mysqli_fetch_array($query_run);
+
+        $res = [
+            'status' => 200,
+            'message' => 'Announce Fetch Successfully by id',
+            'data' => $ad_announce
+        ];
+        echo json_encode($res);
+        return;
+    }
+    
+}
+if(isset($_GET['announce_id'])){
+ 
+    $announce_id = $_GET['announce_id'];
+    
+    $stmt = $conn->prepare("SELECT * FROM announces WHERE Announce_ID=:announce_id");
+    $stmt->bindParam(':announce_id', $announce_id);
+    $stmt->execute();
+
+    if($stmt->rowCount() == 1)
+    {
+        $ad_announce = $stmt->fetch();
+
+        $res = [
+            'status' => 200,
+            'message' => 'Announce Fetch Successfully by id',
+            'data' => $ad_announce
+        ];
+        echo json_encode($res);
+        return;
+    }
+    
+}
+
 ?>
 <?php
 
 
-if(isset($_POST['save_announce'])){
 
-
-      $query = "INSERT INTO announcements (Title , 
-     Image , 
-     Description , 
-     Area , 
-     Address , 
-     Amount ,
-     Announcement_Date , 
-     Ad_Type	) 
-     VALUES ('$title','$file_name','$description','$area',
-     '$address','$amount','$announcment_date','$type')";
-     $query_run = mysqli_query($conn,$query);
-   
-     $clientEmail = $_SESSION['email'];
-     $getClientID = "SELECT client_ID FROM `client` WHERE Email = '$clientEmail'";
-     $clientIDArr = $conn->query($getClientID)->fetch();
-     $client_ID = $clientIDArr['client_ID'];
-     
-         $annonce_Title = $_POST['title'];
-         $announce_Price = $_POST['price'];
-         $announce_Type = $_POST['type'];
-         $announce_Category = $_POST['category'];
-         $postal_Code = $_POST['postalCode'];
-         $announce_City = $_POST['city'];
-     
-         $sql = "INSERT INTO `announces` 
-         (`title`, `price`, `type`, `category`, `postalCode`,`city`, `clientID`) 
-         VALUES 
-         ('$annonceTitle', '$price', '$type', '$category', '$postalCode', '$city','$clientID')";
-         // execute a query
-         $statement = $conn->query($sql);
-     
-         $LAST_INSERT_ID = $conn->query("SELECT LAST_INSERT_ID()")->fetch();
-     
-     
-         //Use something similar before processing files.
-        //  $files = array_filter($_FILES['image']['name']); 
-         // Count the number of imageed files in array
-        //  $total_count = count($_FILES['image']['name']);
-         // Loop through every file
-        //  for( $i=0 ; $i < $total_count ; $i++ ) {
-        //      //The temp file path is obtained
-        //      $tmpFilePath = $_FILES['image']['tmp_name'][$i];
-        //      //A file path needs to be present
-        //      if ($tmpFilePath != ""){
-        //          //Setup our new file path
-        //          $newFilePath = "./imagesFiles/" . $_FILES['image']['name'][$i];
-        //          //File is uploaded to temp dir
-        //          if(move_uploaded_file($tmpFilePath, $newFilePath)) {
-        //              //Other code goes here
-        //              $insertImg = "INSERT INTO `image` 
-        //              (`imagePath`, `imageType`, `annonceID`) 
-        //              VALUES 
-        //              ('$newFilePath', 1 ,'$LAST_INSERT_ID[0]');";
-        //              // execute a query
-        //              $statement = $conn->query($insertImg);
-        //          }
-        //      }
-        //  }
-     
-     
-    
-    
-  }
 
 
 // require "connect.php";

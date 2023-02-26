@@ -325,3 +325,25 @@
 //     signUp_Btn.style.border = "none";
 //   }
 // });
+
+$(document).ready(function () {
+  $("#add_new_announce").submit(function (event) {
+    // Prevent the form from submitting the normal way and refreshing the page
+    event.preventDefault();
+
+    // Get the form data
+    var formData = $("#add_new_announce").serialize();
+
+    // Send the form data using ajax
+    $.ajax({
+      type: "POST",
+      url: "addAnnounce.php",
+      data: formData,
+      success: function (response) {
+        // Display the response on the page
+        $("#result").html(response);
+        // $('#add_announces').load(location.href + " #add_announces");
+      },
+    });
+  });
+});

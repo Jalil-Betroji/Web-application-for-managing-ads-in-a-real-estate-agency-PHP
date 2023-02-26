@@ -1,6 +1,13 @@
 <?php
 require 'connect.php';
 session_start();
+if(isset($_SESSION['email'])){
+     $clientEmail = $_SESSION['email'];
+     $sql = "SELECT a.Client_ID , a.Last_Name, b.First_Name, a.Country ,a.Email , a.Phone , a.Account_Type,
+      a.City , a.Code_Postal ,a.CIN , 'Full_Name' , concat(b.First_Name ,' ',a.Last_Name) as 'Full_Name'
+     FROM client a,client b WHERE a.Email = b.Email;";
+     $statment = $conn->query($sql)->fetch();
+}
 ?>
 
 <!DOCTYPE html>
@@ -64,6 +71,9 @@ session_start();
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
+                    <?php
+                    if(isset($_SESSION['email'])){
+                    ?>
                     <div class="navbar-nav ms-auto">
                         <a href="index.php" class="nav-item nav-link active">Home</a>
                         <a href="#footer" class="nav-item nav-link">About</a>
@@ -75,14 +85,44 @@ session_start();
                             </div>
                         </div>
                         <a href="contact.php" class="nav-item nav-link">Contact</a>
-                        <div class="nav-item nav-link user_sign">
+                    <div class="nav-item dropdown d-flex m-1">
+                    <a href="#" class="nav-item"><img class="rounded-circle" style="width:4rem; height:4rem;"
+                    src="img/Review1.jpg">
+                    <span class="fw-bold"><?php echo $statment['Full_Name'] ?></span>
+                    </a>
+                    <div class="dropdown-menu rounded-0 m-0">
+                    <a href="profile.php" class="dropdown-item" id="my_announces">Profile</a>
+         
+                </div>
+                </div>
+                        
+                       
+                    </div>
+                    <?php
+                    }else{
+                        ?>
+                        <div class="navbar-nav ms-auto">
+                        <a href="index.php" class="nav-item nav-link active">Home</a>
+                        <a href="#footer" class="nav-item nav-link">About</a>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Announces</a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a href="announces.php" class="dropdown-item">Announces List</a>
+                                <a href="#Partners" class="dropdown-item">Our Partners</a>
+                            </div>
+                        </div>
+                        <a href="contact.php" class="nav-item nav-link">Contact</a>
+                    <div class="nav-item dropdown d-flex m-1">
+                    <div class="nav-item nav-link user_sign">
                             <i class="fa-solid fa-right-to-bracket" data-bs-toggle="modal"
                                 data-bs-target="#Login_modal"></i>
                         </div>
                         <div class="nav-item nav-link user_sign">
                             <i class="fa-solid fa-user-plus" data-bs-toggle="modal" data-bs-target="#signup_modal"></i>
                         </div>
-                    </div>
+                    <?php
+                    }
+                    ?>
                 </div>
             </nav>
         </div>
@@ -282,8 +322,9 @@ session_start();
                               <input type="submit" class="btn btn-outline-primary" data-bs-toggle="pill"
                               name="price" value="Price" >
                               <i class="fa-solid fa-caret-up"></i>  
-                            </div>      
-                </form>
+                            </div>    
+                              
+                    </form>
                 </div>
             </div>
 
@@ -296,6 +337,16 @@ session_start();
                                   include 'search.php';
                                  ?>
                                  <?php
+                                 }elseif(isset($_POST['featured'])){
+                                    include 'sort.php';
+                                 }elseif(isset($_POST['Sell'])){
+                                    include 'sort.php';
+                                 }elseif(isset($_POST['rent'])){
+                                    include 'sort.php';
+                                 }elseif(isset($_POST['published_date'])){
+                                    include 'sort.php';
+                                 }elseif(isset($_POST['price'])){
+                                    include 'sort.php';
                                  }else{
                               $query = "SELECT announces.Announce_ID,Client_ID,Title,Area,Rooms,
                               Bathrooms,Price,Country,City,Code_Postal,House_Number,House_Floor,Type,Category,
