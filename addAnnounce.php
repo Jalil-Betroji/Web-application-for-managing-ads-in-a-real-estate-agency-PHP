@@ -30,11 +30,32 @@ if(isset($_SESSION['email'])){
      // execute a query
      $statement = $conn->query($sql);
  
-    //  $LAST_INSERT_ID = $conn->query("SELECT LAST_INSERT_ID()")->fetch();
+     $LAST_INSERT_ID = $conn->query("SELECT LAST_INSERT_ID()")->fetch();
  
-    //  echo $LAST_INSERT_ID ;
+     print_r($LAST_INSERT_ID) ;
+     
+     $errors= array();
+     $file_name = $_FILES['image']['name'];
+     $file_size =$_FILES['image']['size'];
+     $file_tmp =$_FILES['image']['tmp_name'];
+     $file_type=$_FILES['image']['type'];   
+     $file_ext=strtolower(end(explode('.',$_FILES['image']['name'])));
 
-    //  //Use something similar before processing files.
+     if(empty($errors)==true){
+        move_uploaded_file($file_tmp,"images/".$file_name);
+        $insertImg = "INSERT INTO `images` 
+                    (`Announce_ID`,`Image_Path`,`Image_Type` ) 
+                   VALUES 
+                   ('$LAST_INSERT_ID[0]', '$file_name' ,'Primary');";
+                  // execute a query
+                   $statement = $conn->query($insertImg);
+                 print_r($statement);
+        echo "Success";
+      }
+    
+        
+
+     //Use something similar before processing files.
     //  $files = array_filter($_FILES['image']['name']); 
     // //  Count the number of imageed files in array
     //  $total_count = count($_FILES['image']['name']);
@@ -45,16 +66,17 @@ if(isset($_SESSION['email'])){
     //      //A file path needs to be present
     //      if ($tmpFilePath != ""){
     //          //Setup our new file path
-    //          $newFilePath = "./imagesFiles/" . $_FILES['image']['name'][$i];
+    //          $newFilePath = "./img/" . $_FILES['image']['name'][$i];
     //          //File is uploaded to temp dir
     //          if(move_uploaded_file($tmpFilePath, $newFilePath)) {
     //              //Other code goes here
-    //              $insertImg = "INSERT INTO `image` 
-    //              (`imagePath`, `imageType`, `annonceID`) 
+    //              $insertImg = "INSERT INTO `images` 
+    //              (`Announce_ID`,`Image_Path`,`Image_Type` ) 
     //              VALUES 
-    //              ('$newFilePath', 1 ,'$LAST_INSERT_ID[0]');";
+    //              ('$LAST_INSERT_ID[0]', '$newFilePath' ,'Primary');";
     //              // execute a query
     //              $statement = $conn->query($insertImg);
+    //              print_r($statement);
     //          }
     //      }
     //  }

@@ -96,34 +96,13 @@ if(isset($_SESSION['email'])){
 if(isset($_GET['announce_id'])){
     $announce_id = mysqli_real_escape_string($conn, $_GET['announce_id']);
 
-    $query = "SELECT * FROM announces WHERE Announce_ID='$announce_id'";
-    $query_run = mysqli_query($conn, $query);
-
-    if(mysqli_num_rows($query_run) == 1)
-    {
-        $ad_announce = mysqli_fetch_array($query_run);
-
-        $res = [
-            'status' => 200,
-            'message' => 'Announce Fetch Successfully by id',
-            'data' => $ad_announce
-        ];
-        echo json_encode($res);
-        return;
-    }
-    
+    $select_Announce_Info = "SELECT * FROM announces INNER JOIN images ON announces.Announce_ID = images.Image_ID
+    WHERE Announce_ID = '$announce_id'";
+     $Announces_INFO = $conn->prepare($select_Announce_Info);
+     $Announces_INFO->execute();
+     $Announces_Info_List = $Announces_INFO->fetchAll();
+      print_r($Announces_Info_List);
 }
-if(isset($_GET['announce_id'])){
- 
-    $announce_id = $_GET['announce_id'];
-
-    $stmt = $conn->prepare("SELECT * FROM announces WHERE Announce_ID=:announce_id");
-    $stmt->bindParam(':announce_id', $announce_id);
-    $stmt->execute();
-    print_r($stmt);
-    
-}
-
 ?>
 <?php
 

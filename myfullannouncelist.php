@@ -146,7 +146,7 @@ if(isset($_SESSION['email'])){
                             <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
                                 <div class="property-item rounded overflow-hidden">
                                     <div class="position-relative overflow-hidden">
-                                        <a href=""><img class="img-fluid" src="img/property-6.jpg" alt=""></a>
+                                        <a href=""><img class="img-fluid" src="img/<?php echo $values['Image_Path'] ?>" alt=""></a>
                                         <div
                                             class="bg-color rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                             For <?php echo $values['Category'] ?></div>
@@ -315,7 +315,7 @@ if(isset($_SESSION['email'])){
                         <div id="modal_flex">
                             <div class="form-box px-3">
                                 <div>
-                                    <img src="" id="announces_Images" alt="announce images">
+                                    <img src="img/" id="announces_Images" alt="announce images">
                                     Select image to upload:
                                     <input type="file" name="image[]" class="border-0" multiple="multiple">
                                 </div>
@@ -409,34 +409,28 @@ if(isset($_SESSION['email'])){
 
         <!-- Template Javascript -->
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="js/profile.js"></script>
         <script>
 
-$(document).on('click', '.edit_info', function (e) {
-    e.preventDefault();
+$(document).ready(function() {
+    // When the update button is clicked
+    $('.edit_info').click(function() {
     var announce_id = $(this).val();
-    $.ajax({
-        type: "GET",
-        url: "code.php?announce_id=" + announce_id,
-        success: function (response) {
-            var res = JSON.parse(response);
-            if(res.status == 200){
+    console.log(announce_id);
+          $.ajax({
+            type: "GET",
+            url: "code.php?announce_id=" + announce_id,
+            dataType: 'json',
+             success: function (response) {
+              console.log(response);
+            
+                console.log("jalil betroji");
                 $('#announce_id').val(announce_id);
-                $('#title').val(res.data.Title);
-                $('#announce_Images').attr('src',('images/'+res.data.Image_Path));
-                $('#house_floor').val(res.data.House_Floor);
-                $('#area').val(res.data.Area);
-                $('#house_number').val(res.data.House_Number);
-                $('#rooms').val(res.data.Amount);
-                $('#bathrooms').val(res.data.Bathrooms);
-                $('#price').val(res.data.Price);
-                $('#category').val(res.data.Category);
-                $('#code_postal').val(res.data.Code_Postal);
-                $('#type').val(res.data.Type);
-                $('#country').val(res.data.Country);
-                $('#city').val(res.data.City);
+              
             }
-        }
+        
     });
+});
 });
 
 
@@ -451,7 +445,7 @@ $(document).on('click', '.edit_info', function (e) {
            // Send the form data using ajax
           $.ajax({
             type: "POST",
-            url: "search.php",
+            url: "code.php",
             data: formData,
             success: function (response) {
                   // Display the response on the page

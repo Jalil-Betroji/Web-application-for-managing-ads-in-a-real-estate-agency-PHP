@@ -33,7 +33,7 @@ if(isset($_POST['searchbtn'])){
   $query = "SELECT announces.Announce_ID,Client_ID,Title,Area,Rooms,
   Bathrooms,Price,Country,City,Code_Postal,House_Number,House_Floor,Type,Category,
   Image_Path
-  FROM announces INNER JOIN images ON announces.Announce_ID = images.Image_ID WHERE Image_Type = 'Primary'";       
+  FROM announces INNER JOIN images ON announces.Announce_ID = images.Announce_ID WHERE Image_Type = 'Primary'";       
 if (!empty($min_Price)) {            
   $query .= " AND price > $min_Price ";    
   }       
@@ -53,7 +53,6 @@ if ($city != "City") {
                $statment = $conn->prepare($query);
                $statment->execute();
                $announces_List = $statment->fetchAll();
-               print_r($query);
                if ($announces_List > 0){
                foreach($announces_List as $values){
                ?>

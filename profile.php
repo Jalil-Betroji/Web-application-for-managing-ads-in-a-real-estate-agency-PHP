@@ -150,7 +150,7 @@ if(isset($_SESSION['email'])){
                         <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                             <div class="property-item rounded overflow-hidden">
                                 <div class="position-relative overflow-hidden">
-                                    <a href=""><img class="img-fluid" src="img/property-1.jpg" alt=""></a>
+                                    <a href=""><img class="img-fluid" src="img/<?php echo $values['Image_Path'] ?>" alt=""></a>
                                     <div
                                         class="bg-color rounded text-white position-absolute start-0 top-0 m-4 py-1 px-3">
                                         For <?php echo $values['Category'] ?>
